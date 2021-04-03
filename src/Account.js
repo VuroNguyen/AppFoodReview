@@ -47,7 +47,8 @@ const AccountScreen = ({navigation}) =>  {
         <View style={styles.userInfoSection}>
           <View style={{flexDirection: 'row', marginTop: 15}} >
             <Avatar.Image 
-              source={require('./images/blankuser.png')}
+              source={{
+                uri : userData ? userData.userImg || 'https://www.quartzmasters.com/wp-content/uploads/2017/03/article-user-blank.jpg' : 'https://www.quartzmasters.com/wp-content/uploads/2017/03/article-user-blank.jpg'}}
               size={80}
             />
             <View style={{marginLeft: 20}}>

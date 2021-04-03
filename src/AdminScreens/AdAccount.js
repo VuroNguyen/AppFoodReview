@@ -75,7 +75,7 @@ const AdAccountScreen = ({navigation}) =>  {
         </View>
   
         <View style={styles.menuWrapper}>
-          <TouchableRipple onPress={() => {}}>
+          <TouchableRipple onPress={() => navigation.navigate('AddLocation')}>
             <View style={styles.menuItem}>
               <Icon name="plus-thick" color="#FF6347" size={25}/>
               <Text style={styles.menuItemText}>Add More Food Location</Text>

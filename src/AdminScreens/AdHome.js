@@ -1,10 +1,12 @@
 import React, {useContext, useEffect} from 'react';
-import { View, Text, Button,StyleSheet, StatusBar, TextInput, Keyboard, ScrollView, Image } from 'react-native';
+import { View, Text, Button,StyleSheet, StatusBar, TextInput, Keyboard, ScrollView, Image, FlatList } from 'react-native';
 import {Appbar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { AuthContext } from '../AuthProvider';
 import StarRating from '../components/StarRating';
+import {dataTest} from '../models/data';
+import Card from '../components/Card';
 
 
 const AdHomeScreen = ({navigation}) =>{
@@ -38,9 +40,18 @@ const AdHomeScreen = ({navigation}) =>{
         searchBarFocus: false,
       })
     };
+
+    const renderItem = ({item}) => {
+      return (
+          <Card 
+              itemData={item}
+              onPress={()=> {}}
+          />
+      );
+  };
     
       return(
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
         <StatusBar barStyle= {"light-content"}/>
         <Appbar.Header style={{backgroundColor: '#64b5f6'}}>
           <Appbar.Content title='Home' style={styles.Header}/>
@@ -53,25 +64,14 @@ const AdHomeScreen = ({navigation}) =>{
           </View>
         </View>
 
-        <View style={styles.cardsWrapper}>
-        <View style={styles.card}>
-          <View style={styles.cardImgWrapper}>
-            <Image
-              source={require('../images/ad_1.jpg')}
-              resizeMode="cover"
-              style={styles.cardImg}
-            />
-          </View>
-          <View style={styles.cardInfo}>
-            <Text style={styles.cardTitle}>Amazing Food Place</Text>
-            <StarRating ratings={4} reviews={99} />
-            <Text style={styles.cardDetails}>
-              Amazing description for this amazing place
-            </Text>
-          </View>
-        </View>
-        </View>
-      </ScrollView>
+        <View style={styles.container}>
+        <FlatList 
+            data={dataTest}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+        />
+      </View>
+      </View>
       )
     
 }

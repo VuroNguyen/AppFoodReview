@@ -10,6 +10,7 @@ import AccountScreen from "./Account";
 import NotificationScreen from './Notification';
 import ProfileScreen from './Account_Components/Profile';
 import EditProfileScreen from './Account_Components/EditProfile';
+import ExploreScreen from './Explore';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -69,6 +70,16 @@ export default class MainTabScreen extends React.Component {
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ color }) => (
                     <MaterialCommunityIcons name="home" color={color} size={26} />
+                ),
+                }}
+            />
+            <Tab.Screen
+                name="ExploreScreen"
+                component={ExploreScreen}
+                options={{
+                tabBarLabel: 'Explore',
+                tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons name="compass" color={color} size={26} />
                 ),
                 }}
             />

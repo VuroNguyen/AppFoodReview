@@ -6,24 +6,25 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AdHomeScreen from './AdHome';
 import AdSuggestScreen from './AdSuggestScreen';
 import AdAccountScreen from './AdAccount';
+import AddFoodLocationScreen from './AdAddFoodLocation';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const AccountStack = ({navigation}) => (
+const AdAccountStack = ({navigation}) => (
     <Stack.Navigator>
         <Stack.Screen 
-            name='Account'
-            component={AccountScreen}
+            name='AdAccount'
+            component={AdAccountScreen}
             options={{
                 headerShown: false
             }}
         />
         <Stack.Screen 
-            name='Profile'
-            component={ProfileScreen}
+            name='AddLocation'
+            component={AddFoodLocationScreen}
             options={{
-                headerTitle: 'Profile',
+                headerTitle: 'Add Food Location',
                 headerTitleAlign: 'center',
             }}
         />
@@ -58,8 +59,8 @@ const MainAdTabScreens = () => {
                 }}
             />
             <Tab.Screen
-                name="AdAccountScreen"
-                component={AdAccountScreen}
+                name="AdAccount"
+                component={AdAccountStack}
                 options={{
                 tabBarLabel: 'account',
                 tabBarIcon: ({ color }) => (

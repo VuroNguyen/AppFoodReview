@@ -14,7 +14,7 @@ const Images = [
     {image: require('../images/banners/food-banner5.jpg')},
   ];
   
-  export const data = [
+  export const dataTest = [
     {
       id: '1',
       coordinate: {
@@ -27,7 +27,7 @@ const Images = [
         Pellentesque condimentum ut libero id blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`,
       image: Images[0].image,
       menuImg: menuImg[0].image,
-      rating: 4,
+      ratings: 4,
       reviews: 99,
     },
     {
@@ -42,7 +42,7 @@ const Images = [
         Pellentesque condimentum ut libero id blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`,
       image: Images[1].image,
       menuImg: menuImg[1].image,
-      rating: 5,
+      ratings: 5,
       reviews: 102,
     },
     {
@@ -57,7 +57,7 @@ const Images = [
         Pellentesque condimentum ut libero id blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`,
       image: Images[2].image,
       menuImg: menuImg[2].image,
-      rating: 3,
+      ratings: 3,
       reviews: 220,
     },
     {
@@ -72,7 +72,7 @@ const Images = [
         Pellentesque condimentum ut libero id blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`,
       image: Images[3].image,
       menuImg: menuImg[3].image,
-      rating: 4,
+      ratings: 4,
       reviews: 48,
     },
     {
@@ -87,7 +87,7 @@ const Images = [
         Pellentesque condimentum ut libero id blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`,
       image: Images[4].image,
       menuImg: menuImg[4].image,
-      rating: 4,
+      ratings: 4,
       reviews: 178,
     },
     {
@@ -102,7 +102,7 @@ const Images = [
         Pellentesque condimentum ut libero id blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`,
       image: Images[0].image,
       menuImg: menuImg[0].image,
-      rating: 4,
+      ratings: 4,
       reviews: 99,
     },
     {
@@ -117,7 +117,7 @@ const Images = [
         Pellentesque condimentum ut libero id blandit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.`,
       image: Images[1].image,
       menuImg: menuImg[1].image,
-      rating: 5,
+      ratings: 5,
       reviews: 102,
     },
   ];

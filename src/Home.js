@@ -92,7 +92,6 @@ export default class HomeScreen extends React.Component {
             />
           ))}
         </ScrollView>
-        </View>
         <View style={styles.circleDiv}>
           {images.map((image, i) => (
             <View
@@ -101,7 +100,8 @@ export default class HomeScreen extends React.Component {
             />
           ))}
         </View>
-        
+        </View>
+
         <View style={styles.tabbar}>
           <ScrollableTabView
             style={{marginTop:20 }}
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   circleDiv: {
     position: 'absolute',
     bottom: 0,
-    height: getHeight,
+    height: 50,
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
