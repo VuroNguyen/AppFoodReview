@@ -26,20 +26,19 @@ import ImagePicker from 'react-native-image-crop-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import Geolocation from '@react-native-community/geolocation';
-import FullMapScreen from './FullMap';
+import FullMapScreen from '../AdminScreens/FullMap';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 
-const AddFoodLocationScreen = ({ navigation }) => {
+const OwnerAddFoodLocationScreen = ({ navigation }) => {
 
   const { user,logout } = useContext(AuthContext);
   const [foodCard, setFoodCard] = useState({
     title: '',
     description: '',
     price: '',
-    address: '',
   });
   const [image, setImage] = useState(null);
   const [menuimage, setMenuImage] = useState(null);
@@ -128,7 +127,6 @@ const AddFoodLocationScreen = ({ navigation }) => {
     .add({
       userId: user.uid,
       title: foodCard.title,
-      address: foodCard.price,
       description: foodCard.description,
       price: foodCard.price,
       coordinate: coord,
@@ -337,6 +335,7 @@ const AddFoodLocationScreen = ({ navigation }) => {
 
   const onChangeCoord = (val) => {
     setCoord(val)
+    alert(JSON.stringify(val))
     console.log(JSON.stringify(coord))
   }
 
@@ -421,18 +420,6 @@ const AddFoodLocationScreen = ({ navigation }) => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             onChangeText={(txt) => setFoodCard({...foodCard, title: txt})}
-            style={
-              styles.textInput
-            }
-          />
-        </View>
-        <View style={styles.action}>
-          <FontAwesome name="map" size={20} />
-          <TextInput
-            placeholder="Input The Address"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            onChangeText={(txt) => setFoodCard({...foodCard, address: txt})}
             style={
               styles.textInput
             }
@@ -538,7 +525,7 @@ const AddFoodLocationScreen = ({ navigation }) => {
 
 }
 
-export default AddFoodLocationScreen;
+export default OwnerAddFoodLocationScreen;
 
 const styles = StyleSheet.create({
   container: {

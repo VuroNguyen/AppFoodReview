@@ -10,7 +10,7 @@ const NotificationScreen = ({navigation}) =>{
   const {user} = useContext(AuthContext);
 
   const getRole = async() => {
-    const currenUser = await firestore()
+    await firestore()
     .collection('users')
     .doc(user.uid)
     .get()
@@ -29,6 +29,9 @@ const NotificationScreen = ({navigation}) =>{
   useEffect(() => {
     
     getRole();
+    return () => {
+      data
+    }
   }, []);
     
       return(

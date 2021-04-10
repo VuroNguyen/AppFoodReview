@@ -11,6 +11,8 @@ import NotificationScreen from './Notification';
 import ProfileScreen from './Account_Components/Profile';
 import EditProfileScreen from './Account_Components/EditProfile';
 import ExploreScreen from './Explore';
+import CardDetailsScreen from './CardDetail';
+import ChatScreen from './Chat';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -54,6 +56,39 @@ const AccountStack = ({navigation}) => (
     </Stack.Navigator>
 );
 
+const HomeStack = ({navigation}) => {
+    return (
+    <Stack.Navigator>
+        <Stack.Screen 
+            name='HomeScreen'
+            component={HomeScreen}
+            options={{
+                headerShown: false
+            }}
+        />
+        <Stack.Screen 
+        name="CardDetails"
+        component={CardDetailsScreen}
+        options={({route}) => ({
+          // title: route.params.title,
+          headerBackTitleVisible: false,
+          headerTitle: false,
+          headerTransparent: true,
+          headerTintColor: '#fff'
+        })}
+      />
+      <Stack.Screen 
+            name='ChatScreen'
+            component={ChatScreen}
+            options={({route}) => ({
+                title: route.params.FoodLocation,
+                headerBackTitleVisible: false,
+              })}
+        />
+    </Stack.Navigator>
+    )
+}
+
 export default class MainTabScreen extends React.Component {
     render() {
         return (
@@ -65,7 +100,7 @@ export default class MainTabScreen extends React.Component {
             >
             <Tab.Screen
                 name="HomeScreen"
-                component={HomeScreen}
+                component={HomeStack}
                 options={{
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ color }) => (

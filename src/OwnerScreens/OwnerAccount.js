@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; //to make i
 import firestore from '@react-native-firebase/firestore';
 
 
-const AdAccountScreen = ({navigation}) =>  {
+const OwnerAccountScreen = ({navigation}) =>  {
   
     const { user, logout } = useContext(AuthContext);
     const [userData, setUserData] = useState(null);
@@ -45,7 +45,7 @@ const AdAccountScreen = ({navigation}) =>  {
     return (
 
         <SafeAreaView style={styles.container}>
-          <TouchableRipple onPress={()=> navigation.navigate('EditAdAccount')}>
+          <TouchableRipple onPress={()=> navigation.navigate('EditOwnerAccount')}>
         <View style={styles.userInfoSection}>
           <View style={{flexDirection: 'row', marginTop: 15}}>
             <Avatar.Image 
@@ -79,7 +79,7 @@ const AdAccountScreen = ({navigation}) =>  {
         </View>
   
         <View style={styles.menuWrapper}>
-          <TouchableRipple onPress={() => navigation.navigate('AddLocation')}>
+          <TouchableRipple onPress={() => navigation.navigate('OwnerAddLocation')}>
             <View style={styles.menuItem}>
               <Icon name="plus-thick" color="#FF6347" size={25}/>
               <Text style={styles.menuItemText}>Add More Food Location</Text>
@@ -94,7 +94,7 @@ const AdAccountScreen = ({navigation}) =>  {
           <TouchableRipple onPress={() => {}}>
             <View style={styles.menuItem}>
               <Icon name="image-edit" color="#FF6347" size={25}/>
-              <Text style={styles.menuItemText}>Banner Configuration</Text>
+              <Text style={styles.menuItemText}>Notification</Text>
             </View>
           </TouchableRipple>
           <TouchableRipple onPress={() => {}}>
@@ -185,4 +185,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdAccountScreen;
+export default OwnerAccountScreen;

@@ -37,7 +37,7 @@ const SignupCom = () => {
   // const [secureTextEntry_confirm, setSecureTextEntry_confirm] = useState(true);
   // const [checked, setChecked] = useState(false);
 
-  textInputChange = (value) => {
+  const textInputChange = (value) => {
     if (value.length !== 0) {
       setData({
         ...data,
@@ -54,14 +54,14 @@ const SignupCom = () => {
     }
   }
 
-  SecureTextEntry = () => {
+  const SecureTextEntry = () => {
     setData({
       ...data,
       secureTextEntry: !data.secureTextEntry
     })
   }
 
-  SecureTextEntry_confirm = () => {
+  const SecureTextEntry_confirm = () => {
     setData({
       ...data,
       confirm_secureTextEntry: !data.confirm_secureTextEntry
@@ -233,7 +233,7 @@ const SignupCom = () => {
         <View style={styles.button}>
           <TouchableOpacity
             style={styles.signIn}
-            onPress={() => register(data.email, data.password)}>
+            onPress={() => {data.password === data.password_confirm ? register(data.email, data.password) : alert("Password Confirm not correct!!")}}>
             <LinearGradient
               colors={['#4c669f', '#3b5998']}
               style={styles.signIn}>

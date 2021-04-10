@@ -3,50 +3,65 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AdHomeScreen from './AdHome';
-import AdSuggestScreen from './AdSuggestScreen';
-import AdAccountScreen from './AdAccount';
-import AddFoodLocationScreen from './AdAddFoodLocation';
-import EditAdProfileScreen from './EditAdAccount';
+import OwnerHomeScreen from './OwnerHome';
+import OwnerChatScreen from './OwnerChat';
+import ChatOwnerScreen from './ChatScreen';
+import OwnerAccountScreen from './OwnerAccount';
+import OwnerAddFoodLocationScreen from './OwnerAddFoodLocation';
+import EditOwnerProfileScreen from './EditOwnerAccount';
 import CardDetailsScreen from '../CardDetail';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const AdAccountStack = ({navigation}) => (
+const OwnerAccountStack = ({navigation}) => (
     <Stack.Navigator>
         <Stack.Screen 
-            name='AdAccount'
-            component={AdAccountScreen}
+            name='OwnerAccount'
+            component={OwnerAccountScreen}
             options={{
                 headerShown: false
             }}
         />
         <Stack.Screen 
-            name='AddLocation'
-            component={AddFoodLocationScreen}
+            name='OwnerAddLocation'
+            component={OwnerAddFoodLocationScreen}
             options={{
                 headerTitle: 'Add Food Location',
                 headerTitleAlign: 'center',
             }}
         />
         <Stack.Screen 
-            name='EditAdAccount'
-            component={EditAdProfileScreen}
+            name='EditOwnerAccount'
+            component={EditOwnerProfileScreen}
             options={{
-                headerTitle: 'Edit Admin Profile',
+                headerTitle: 'Edit Owner Profile',
                 headerTitleAlign: 'center',
             }}
         />
     </Stack.Navigator>
 );
 
-const AdHomeStack = ({navigation}) => {
+const OwnerChatStack = ({navigation}) => (
+    <Stack.Navigator>
+      <Stack.Screen name="OwnerChatScreen" component={OwnerChatScreen} />
+      <Stack.Screen
+        name="ChatOwnerScreen"
+        component={ChatOwnerScreen}
+        options={({route}) => ({
+          title: route.params.userName,
+          headerBackTitleVisible: false,
+        })}
+      />
+    </Stack.Navigator>
+  );
+
+  const OwnerHomeStack = ({navigation}) => {
     return (
     <Stack.Navigator>
         <Stack.Screen 
             name='HomeScreen'
-            component={AdHomeScreen}
+            component={OwnerHomeScreen}
             options={{
                 headerShown: false
             }}
@@ -66,8 +81,7 @@ const AdHomeStack = ({navigation}) => {
     )
 }
 
-
-const MainAdTabScreens = () => {
+const MainOwnerTabScreens = () => {
     return (
         <Tab.Navigator
             initialRouteName="Home"
@@ -76,7 +90,7 @@ const MainAdTabScreens = () => {
         >
             <Tab.Screen
                 name="Home"
-                component={AdHomeStack}
+                component={OwnerHomeStack}
                 options={{
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ color }) => (
@@ -85,18 +99,18 @@ const MainAdTabScreens = () => {
                 }}
             />
             <Tab.Screen
-                name="AdSuggestScreen"
-                component={AdSuggestScreen}
+                name="OwnerChatScreen"
+                component={OwnerChatStack}
                 options={{
-                tabBarLabel: 'User Suggestion',
+                tabBarLabel: 'Chat',
                 tabBarIcon: ({ color }) => (
-                    <MaterialCommunityIcons name="bell" color={color} size={26} />
+                    <MaterialCommunityIcons name="comment-text-outline" color={color} size={26} />
                 ),
                 }}
             />
             <Tab.Screen
-                name="AdAccount"
-                component={AdAccountStack}
+                name="OwnerAccount"
+                component={OwnerAccountStack}
                 options={{
                 tabBarLabel: 'account',
                 tabBarIcon: ({ color }) => (
@@ -108,4 +122,4 @@ const MainAdTabScreens = () => {
     )
 }
 
-export default MainAdTabScreens;
+export default MainOwnerTabScreens;

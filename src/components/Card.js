@@ -1,15 +1,46 @@
-import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import React,{useContext, useState, useEffect} from 'react';
+import {View, Text, Image, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import {AuthContext} from '../AuthProvider';
 
 import StarRating from './StarRating';
+import firestore from '@react-native-firebase/firestore'
 
-const Card = ({itemData, onPress}) => {
+const Card = ({itemData, onPress, onDelete}) => {
+
+  const {user, logout} = useContext(AuthContext);
+  const [userData, setUserData] = useState(null);
+
+    const getUser = async() => {
+      await firestore()
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log(documentSnapshot.data())
+          setUserData(documentSnapshot.data())
+        }
+      })
+      .catch(error => {
+        console.log('Error:',error);
+      })
+     }
+
+     useEffect(() => {
+        getUser();
+        return () => {
+          userData
+        }
+      }, []);
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.card}>
         <View style={styles.cardImgWrapper}>
           <Image
-            source={itemData.image}
+            source={{uri:itemData.foodCardImg}}
             resizeMode="cover"
             style={styles.cardImg}
           />
@@ -18,6 +49,11 @@ const Card = ({itemData, onPress}) => {
           <Text style={styles.cardTitle}>{itemData.title}</Text>
           <StarRating ratings={itemData.ratings} reviews={itemData.reviews} />
           <Text numberOfLines={2} style={styles.cardDetails}>{itemData.description}</Text>
+          {userData? user.uid === itemData.userId  || userData.role === 'admin' ? 
+          <TouchableOpacity style={styles.button} onPress={()=> onDelete(itemData.id)}>
+          <Ionicons name="md-trash-bin" size={25} />
+          </TouchableOpacity> 
+          : null : null}
         </View>
       </View>
     </TouchableOpacity>
@@ -65,4 +101,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#444',
   },
+  button: {
+    alignSelf: 'flex-end',
+    borderRadius: 5,
+    padding: 5,
+  }
 });

@@ -35,6 +35,9 @@ const AccountScreen = ({navigation}) =>  {
 
      useEffect(() => {
         getUser();
+        return () => {
+          userData
+        }
       }, []);
     
     return (

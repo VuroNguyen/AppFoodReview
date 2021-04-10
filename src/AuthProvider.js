@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { Alert } from 'react-native';
 
 export const AuthContext = createContext();
 
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }) => {
                     try {
                         await auth().signInWithEmailAndPassword(email, password)
                     } catch (e) {
-                        console.log(e);
+                        alert('Error: Password or Email unavaliable', e);
                     }
                 },
                 register: async (email, password) => {
@@ -33,11 +34,11 @@ export const AuthProvider = ({ children }) => {
                                         userImg: null,
                                         role: '',
                                     }).catch(error => {
-                                        console.log('something gone shit with added users:', error)
+                                        alert('something gone wrong when added users:', error)
                                     })
                             })
                             .catch(error => {
-                                console.log('Something gone shit with sign in: ', error)
+                                alert('Something gone wrong with sign up: ', error)
                             })
                     } catch (e) {
                         console.log(e);

@@ -12,9 +12,9 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
 
-const AdHomeScreen = ({navigation}) =>{
+const OwnerHomeScreen = ({navigation}) =>{
 
-    const {logout} = useContext(AuthContext);
+    const {user,logout} = useContext(AuthContext);
     const [foodCard, setFoodCard] = useState(null);
     const [loading, setLoading] = useState(true);
     const [deleted, setDeleted] = useState(false);
@@ -29,7 +29,8 @@ const AdHomeScreen = ({navigation}) =>{
 
         await firestore()
         .collection('foodcards')
-        .orderBy('title', 'desc')
+        .where('userId' , '==', user.uid)
+        .orderBy('title', 'asc')
         .get()
         .then((querySnapshot) => {
           // console.log("Total cards:", querySnapshot.size);
@@ -234,7 +235,7 @@ const AdHomeScreen = ({navigation}) =>{
     
 }
 
-export default AdHomeScreen;
+export default OwnerHomeScreen;
 
 const styles = StyleSheet.create({
   container: {

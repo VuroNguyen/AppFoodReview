@@ -24,7 +24,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
-const EditProfileScreen = () => {
+const EditAdProfileScreen = () => {
 
   const [userData, setUserData] = useState(null);
   const [image, setImage] = useState(null);
@@ -127,6 +127,9 @@ const EditProfileScreen = () => {
 
    useEffect(() => {
       getUser();
+      return () => {
+        userData
+      }
     }, []);
 
 
@@ -277,7 +280,7 @@ const EditProfileScreen = () => {
             </View>
           </TouchableOpacity>
           <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-            {userData && userData.name !== ''? userData.name : 'User'}
+            {userData && userData.name !== ''? userData.name : 'Admin'}
           </Text>
         </View>
 
@@ -342,7 +345,7 @@ const EditProfileScreen = () => {
     );
 }
 
-export default EditProfileScreen;
+export default EditAdProfileScreen;
 
 const styles = StyleSheet.create({
     container: {

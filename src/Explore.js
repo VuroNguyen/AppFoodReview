@@ -16,8 +16,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-import { markers, mapDarkStyle, mapStandardStyle } from './models/mapData';
+import { mapDarkStyle, mapStandardStyle } from './models/mapData';
 import StarRating from './components/StarRating';
+import firestore from '@react-native-firebase/firestore';
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
@@ -27,10 +28,73 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 const ExploreScreen = ({ navigation }) => {
 
     const { logout } = useContext(AuthContext);
+    const [markers, setMarkers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchFoodCard = async() => {
+      try {
+
+        const list = [];
+
+        await firestore()
+        .collection('foodcards')
+        .get()
+        .then((querySnapshot) => {
+          console.log("Total cards:", querySnapshot.size);
+
+          querySnapshot.forEach(doc => {
+            const {
+              userId,
+              title,
+              description,
+              price,
+              foodCardImg,
+              menuImg,
+              coordinate,
+              ratings,
+              reviews
+            } = doc.data();
+            list.push({
+              id: doc.id,
+              userId,
+              title,
+              description,
+              price,
+              foodCardImg,
+              menuImg,
+              coordinate,
+              ratings,
+              reviews,
+              liked: false,
+            })
+          })
+        })
+
+        setMarkers(list);
+        if(loading) {
+          setLoading(false);
+        }
+
+        console.log("Card:", markers);
+      } catch(e) {
+        console.log(e);
+      }
+    };
+
+    useEffect(() => {
+      fetchFoodCard();
+      // Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+      // Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
+  
+      // // cleanup function
+      // return () => {
+      //   Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+      //   Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
+      // };
+    }, []);
     
 
     const initialMapState = {
-        markers,
         categories: [
           { 
             name: 'Fastfood Center', 
@@ -69,8 +133,8 @@ const ExploreScreen = ({ navigation }) => {
     useEffect(() => {
         mapAnimation.addListener(({ value }) => {
           let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-          if (index >= state.markers.length) {
-            index = state.markers.length - 1;
+          if (index >= markers.length) {
+            index = markers.length - 1;
           }
           if (index <= 0) {
             index = 0;
@@ -81,7 +145,7 @@ const ExploreScreen = ({ navigation }) => {
           const regionTimeout = setTimeout(() => {
             if( mapIndex !== index ) {
               mapIndex = index;
-              const { coordinate } = state.markers[index];
+              const { coordinate } = markers[index];
               _map.current.animateToRegion(
                 {
                   ...coordinate,
@@ -95,7 +159,7 @@ const ExploreScreen = ({ navigation }) => {
         });
       });
 
-      const interpolations = state.markers.map((marker, index) => {
+      const interpolations = markers.map((marker, index) => {
         const inputRange = [
           (index - 1) * CARD_WIDTH,
           index * CARD_WIDTH,
@@ -134,7 +198,7 @@ const ExploreScreen = ({ navigation }) => {
           provider={PROVIDER_GOOGLE}
           
         >
-          {state.markers.map((marker, index) => {
+          {markers.map((marker, index) => {
             const scaleStyle = {
               transform: [
                 {
@@ -218,16 +282,16 @@ const ExploreScreen = ({ navigation }) => {
             {useNativeDriver: true}
           )}
         >
-          {state.markers.map((marker, index) =>(
+          {markers.map((marker, index) =>(
             <View style={styles.card} key={index}>
               <Image 
-                source={marker.image}
+                source={{uri: marker.foodCardImg}}
                 style={styles.cardImage}
                 resizeMode="cover"
               />
               <View style={styles.textContent}>
                 <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
-                <StarRating ratings={marker.rating} reviews={marker.reviews} />
+                <StarRating ratings={marker.ratings} reviews={marker.reviews} />
                 <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
                 <View style={styles.button}>
                   <TouchableOpacity
@@ -237,9 +301,6 @@ const ExploreScreen = ({ navigation }) => {
                       borderWidth: 1
                     }]}
                   >
-                    <Text style={[styles.textSign, {
-                      color: '#FF6347'
-                    }]}>Order Now</Text>
                   </TouchableOpacity>
                 </View>
               </View>

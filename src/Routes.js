@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './RootStack';
 import MainTabScreen from './MainTab';
 import MainAdTabScreens from './AdminScreens/MainAdScreens';
+import MainOwnerTabScreens from './OwnerScreens/MainOwnerScreen';
 import {AuthContext} from './AuthProvider';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -59,7 +60,7 @@ const Routes = () => {
     return (
         <NavigationContainer >
          
-           {user && data ? data.role === 'admin' ? <MainAdTabScreens/> : <MainTabScreen/> : <RootStack/>}
+           {user && data ? data.role === 'admin' ?  <MainAdTabScreens/> : data.role ==='owner' ? <MainOwnerTabScreens/> : <MainTabScreen/> : <RootStack/>}
             
         </NavigationContainer>
     )
