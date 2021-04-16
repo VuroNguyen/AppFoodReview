@@ -15,7 +15,9 @@ import storage from '@react-native-firebase/storage';
 const AdHomeScreen = ({navigation}) =>{
 
     const {logout} = useContext(AuthContext);
+    const [searchKey, setSearchKey] = useState('');
     const [foodCard, setFoodCard] = useState(null);
+    const [filtered, setFiltered] = useState(null);
     const [loading, setLoading] = useState(true);
     const [deleted, setDeleted] = useState(false);
     const [data, setData] = React.useState({
@@ -44,7 +46,8 @@ const AdHomeScreen = ({navigation}) =>{
               menuImg,
               coordinate,
               ratings,
-              reviews
+              reviews,
+              likes
             } = doc.data();
             list.push({
               id: doc.id,
@@ -57,12 +60,14 @@ const AdHomeScreen = ({navigation}) =>{
               coordinate,
               ratings,
               reviews,
+              likes,
               liked: false,
             })
           })
         })
 
         setFoodCard(list);
+        setFiltered(list);
         if(loading) {
           setLoading(false);
         }
@@ -89,6 +94,21 @@ const AdHomeScreen = ({navigation}) =>{
       fetchFoodCard();
       setDeleted(false);
     }, [deleted]);
+
+    const SearchFilter = (text) => {
+      if(text) {
+        const newData = filtered.filter((item)=> {
+          const newItemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return newItemData.indexOf(textData) > -1;
+        });
+        setFoodCard(newData);
+        setSearchKey(text);
+      } else {
+        setFoodCard(filtered);
+        setSearchKey(text);
+      }
+    }
 
     const handleDelete = (foodCardId) => {
       Alert.alert(
@@ -218,7 +238,7 @@ const AdHomeScreen = ({navigation}) =>{
         <View style={styles.searchBackground}>
           <View style={styles.searchBar}>
             <Icon name='ios-search' style={{fontSize: 20}}/>
-            <TextInput placeholder="Search" style={styles.searchInput} onSubmitEditing={Keyboard.dismiss}/>
+            <TextInput placeholder="Search" value={searchKey} onChangeText={(val)=> SearchFilter(val) } style={styles.searchInput} onSubmitEditing={Keyboard.dismiss}/>
           </View>
         </View>
 

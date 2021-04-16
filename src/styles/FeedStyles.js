@@ -26,6 +26,13 @@ export const UserImg = styled.Image`
     border-radius: 25px;
 `;
 
+export const Star = styled.View`
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 15px;
+    margin-left: 40px;
+`;
+
 export const UserInfoText = styled.View`
     flex-direction: column;
     justify-content: center;

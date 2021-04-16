@@ -12,7 +12,7 @@ import {
    Button,
    PermissionsAndroid
 } from 'react-native';
-import { AuthContext } from '../AuthProvider';
+import { AuthContext } from './AuthProvider';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Animated from 'react-native-reanimated';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
@@ -26,13 +26,13 @@ import ImagePicker from 'react-native-image-crop-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import Geolocation from '@react-native-community/geolocation';
-import FullMapScreen from './FullMap';
+import FullMapScreen from './AdminScreens/FullMap';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 
-const AddFoodLocationScreen = ({ navigation }) => {
+const AddSuggestionScreen = ({ navigation }) => {
 
   const { user,logout } = useContext(AuthContext);
   const [foodCard, setFoodCard] = useState({
@@ -124,7 +124,7 @@ const AddFoodLocationScreen = ({ navigation }) => {
     console.log('Food Card: ', foodCard);
 
     firestore()
-    .collection('foodcards')
+    .collection('suggestions')
     .add({
       userId: user.uid,
       title: foodCard.title,
@@ -143,8 +143,8 @@ const AddFoodLocationScreen = ({ navigation }) => {
     .then(() => {
       console.log('Food Card Added!');
       Alert.alert(
-        'Food Card published!',
-        'Your new Food Location has been published Successfully!',
+        'Food Card Finished Transport to Admin!',
+        'Please wait for Admin to check it validation!',
       );
       setFoodCard(null);
       setCoord({
@@ -172,7 +172,7 @@ const AddFoodLocationScreen = ({ navigation }) => {
     setUploading(true);
     setTransferred(0);
 
-    const storageRef = storage().ref(`foodcard/${filename}`);
+    const storageRef = storage().ref(`suggestions/${filename}`);
     const task = storageRef.putFile(uploadUri);
 
     // Set transferred state
@@ -223,7 +223,7 @@ const AddFoodLocationScreen = ({ navigation }) => {
     setUploading(true);
     setTransferred(0);
 
-    const storageRef = storage().ref(`foodcard/${filenamemenu}`);
+    const storageRef = storage().ref(`suggestions/${filenamemenu}`);
     const task = storageRef.putFile(uploadMenuUri);
 
     // Set transferred state
@@ -526,9 +526,6 @@ const AddFoodLocationScreen = ({ navigation }) => {
 
           </MapView>
         </TouchableOpacity>
-        
-        
-        
 
         <TouchableOpacity style={styles.commandButton} onPress={submitAddCard}>
           <Text style={styles.panelButtonTitle}>Submit</Text>
@@ -539,7 +536,7 @@ const AddFoodLocationScreen = ({ navigation }) => {
 
 }
 
-export default AddFoodLocationScreen;
+export default AddSuggestionScreen;
 
 const styles = StyleSheet.create({
   container: {

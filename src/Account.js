@@ -10,9 +10,25 @@ import {AuthContext} from './AuthProvider';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; //to make icons for apps
 import { SafeAreaView } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import Share from 'react-native-share';
 
 
 const AccountScreen = ({navigation}) =>  {
+
+  const myCustomShare = async() => {
+    const shareOptions = {
+      message: 'Find your next meal from FoodFinder App. You do not have to waste time going around to find it. I\'ve already used this to get my self 10 different good food locations. Try it Now.',
+      url: 'https://firebasestorage.googleapis.com/v0/b/review-food-app.appspot.com/o/logo%2Fsample2.png?alt=media&token=d3044784-c5ef-419e-ad84-b9cbc85fc990',
+      // urls: [files.image1, files.image2]
+    }
+
+    try {
+      const ShareResponse = await Share.open(shareOptions);
+      console.log(JSON.stringify(ShareResponse));
+    } catch(error) {
+      console.log('Error => ', error);
+    }
+  };
   
     const { user, logout } = useContext(AuthContext);
     const [userData, setUserData] = useState(null);
@@ -87,13 +103,13 @@ const AccountScreen = ({navigation}) =>  {
               <Text style={styles.menuItemText}>Like</Text>
             </View>
           </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
+          <TouchableRipple onPress={() => navigation.navigate('AddSuggestionScreen')}>
             <View style={styles.menuItem}>
               <Icon name="plus-thick" color="#FF6347" size={25}/>
               <Text style={styles.menuItemText}>Add Your Suggestion Food Area</Text>
             </View>
           </TouchableRipple>
-          <TouchableRipple onPress={() => {}}>
+          <TouchableRipple onPress={myCustomShare}>
             <View style={styles.menuItem}>
               <Icon name="share-outline" color="#FF6347" size={25}/>
               <Text style={styles.menuItemText}>Invite Your Friends</Text>

@@ -39,6 +39,7 @@ const OwnerAddFoodLocationScreen = ({ navigation }) => {
     title: '',
     description: '',
     price: '',
+    address: '',
   });
   const [image, setImage] = useState(null);
   const [menuimage, setMenuImage] = useState(null);
@@ -127,6 +128,7 @@ const OwnerAddFoodLocationScreen = ({ navigation }) => {
     .add({
       userId: user.uid,
       title: foodCard.title,
+      address: foodCard.address,
       description: foodCard.description,
       price: foodCard.price,
       coordinate: coord,
@@ -420,6 +422,19 @@ const OwnerAddFoodLocationScreen = ({ navigation }) => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             onChangeText={(txt) => setFoodCard({...foodCard, title: txt})}
+            style={
+              styles.textInput
+            }
+          />
+        </View>
+
+        <View style={styles.action}>
+          <FontAwesome name="map" size={20} />
+          <TextInput
+            placeholder="Input The Address"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            onChangeText={(txt) => setFoodCard({...foodCard, address: txt})}
             style={
               styles.textInput
             }

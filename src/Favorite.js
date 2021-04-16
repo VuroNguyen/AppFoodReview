@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { TextInput, FlatList, View, Text, Button,StyleSheet, StatusBar, Keyboard, Image } from 'react-native';
 import {Appbar} from 'react-native-paper';
 import StarRating from './components/StarRating';
+import Card from './components/Card';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import { AuthContext } from './AuthProvider';
+import firestore from '@react-native-firebase/firestore';
+import firebase from 'firebase';
 
 const DATA = [
   {
@@ -28,40 +31,144 @@ const Item = ({ title }) => (
   </View>
 );
 
-const FavoriteScreen = () => {
+const FavoriteScreen = ({navigation}) => {
 
-    const [data, setData] = React.useState({
-      searchBarFocus: false,
-    });
+    const {user} = useContext(AuthContext)
+    const [searchKey, setSearchKey] = useState('');
+    const [foodCardId, setFoodCardId] = useState([]);
+    const [flag, setFlag] = useState(false);
+    const [flag2, setFlag2] = useState(false);
+
+    const fetchLikeList = async() => {
+      try {
+
+        const listId = [];
+
+        await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .collection('liked')
+        .where('liked', '==', true)
+        .get()
+        .then((querySnapshot) => {
+          console.log("Total Like:", querySnapshot.size);
+
+          querySnapshot.forEach(doc => {
+            listId.push(
+               doc.id,
+            )
+          })
+        })
+
+        setFoodCardId(listId);
+        // if(loading) {
+        //   setLoading(false);
+        // }
+        setFlag(true);
+        setFlag2(true);
+
+        console.log("Card ID:", foodCardId);
+      } catch(e) {
+        console.log(e);
+      }
+    };
+
+    const [foodCard, setFoodCard] = useState(null);
+    const [filtered, setFiltered] = useState(null);
+    const [loading, setLoading] = useState(true);
+// foodCardId.forEach(id => {
+  const fetchFoodCard = async() => {
+    // console.log('Long:',foodCardId)
+    try {
+      const list = [];
+       await firestore()
+      .collection('foodcards')
+      .where(firestore.FieldPath.documentId(), 'in', foodCardId)
+      .get()
+      .then((querySnapshot) => {
+        console.log("Total cards:", querySnapshot.size);
+
+        querySnapshot.forEach(doc => {
+          const {
+            userId,
+            title,
+            description,
+            price,
+            foodCardImg,
+            menuImg,
+            coordinate,
+            ratings,
+            reviews,
+            likes
+          } = doc.data();
+          list.push({
+            id: doc.id,
+            userId,
+            title,
+            description,
+            price,
+            foodCardImg,
+            menuImg,
+            coordinate,
+            ratings,
+            reviews,
+            likes,
+            liked: false,
+          })
+        })
+      })
+      
+      
+
+      setFoodCard(list);
+      setFiltered(list);
+      if(loading) {
+        setLoading(false);
+      }
+
+      // console.log("Card:", foodCard);
+    } catch(e) {
+      console.log(e);
+    }
+    
+  };  
+
+  const SearchFilter = (text) => {
+    if(text) {
+      const newData = filtered.filter((item)=> {
+        const newItemData = item.title ? item.title.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return newItemData.indexOf(textData) > -1;
+      });
+      setFoodCard(newData);
+      setSearchKey(text);
+    } else {
+      setFoodCard(filtered);
+      setSearchKey(text);
+    }
+  }
+    
 
     useEffect(() => {
-      Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-      Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-  
-      // cleanup function
-      return () => {
-        Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
-        Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
-      };
+      fetchLikeList();
+      // fetchInitial();
     }, []);
-  
-    const _keyboardDidShow = () => {
-      setData({
-        ...data,
-        searchBarFocus: true,
-      })
-    };
-  
-    const _keyboardDidHide = () => {
-      setData({
-        ...data,
-        searchBarFocus: false,
-      })
-    };
 
-    const renderItem = ({ item }) => (
-      <Item title={item.title} />
-    );
+    useEffect(() => {
+      // console.log('a')
+      fetchFoodCard();
+    }, [flag]);
+
+
+    const renderItem = ({item}) => {
+      return (
+          <Card 
+              itemData={item}
+              onPress={()=> navigation.navigate('CardDetails', {itemData: item})}
+          />
+      );
+  };
+
       return(
         <View style={styles.container}>
         <StatusBar barStyle= {"light-content"}/>
@@ -72,16 +179,15 @@ const FavoriteScreen = () => {
         <View style={styles.searchBackground}>
           <View style={styles.searchBar}>
             <Icon name='ios-search' style={{fontSize: 20}}/>
-            <TextInput placeholder="Search" style={styles.searchInput} onSubmitEditing={Keyboard.dismiss}/>
+            <TextInput placeholder="Search" value={searchKey} style={styles.searchInput} onChangeText={(val)=> SearchFilter(val) } onSubmitEditing={Keyboard.dismiss}/>
           </View>
         </View>
-        {/* <FlatList
-        style={{backgroundColor: data.searchBarFocus ? 'rgba(0,0,0,0.3)' : 'white'}}
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      /> */}
-        <View style={styles.cardsWrapper}>
+        <FlatList 
+            data={foodCard}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+        />
+        {/* <View style={styles.cardsWrapper}>
         <View style={styles.card}>
           <View style={styles.cardImgWrapper}>
             <Image
@@ -98,7 +204,7 @@ const FavoriteScreen = () => {
             </Text>
           </View>
         </View>
-        </View>
+        </View> */}
         
       </View>
       )

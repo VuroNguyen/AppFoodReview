@@ -72,6 +72,9 @@ const EditProfileScreen = () => {
         'Your profile has been updated successfully.'
       );
     })
+    .catch (error => {
+      console.log("error:", error)
+    })
   }
 
    const uploadImage = async () => {

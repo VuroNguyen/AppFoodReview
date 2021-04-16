@@ -46,7 +46,7 @@ const Card = ({itemData, onPress, onDelete}) => {
           />
         </View>
         <View style={styles.cardInfo}>
-          <Text style={styles.cardTitle}>{itemData.title}</Text>
+          <Text style={styles.cardTitle}>{itemData.title.toUpperCase()}</Text>
           <StarRating ratings={itemData.ratings} reviews={itemData.reviews} />
           <Text numberOfLines={2} style={styles.cardDetails}>{itemData.description}</Text>
           {userData? user.uid === itemData.userId  || userData.role === 'admin' ? 

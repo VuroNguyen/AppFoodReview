@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, StatusBar, Dimensions, Image, ScrollView, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import ScrollableTabView , { DefaultTabBar  } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Swiper from 'react-native-swiper';
 
 import Card from './components/Card';
@@ -22,20 +22,20 @@ const images = [
   'https://media.foody.vn/images/beauty-upload-api-675x355.-210309112809.jpg',
   'https://images.foody.vn/biz_banner/foody-upload-api-food-biz-210315111823.jpg'
 ];
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   //  const scrollRef = React.useRef();
   const [searchState, setSearchState] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
-
+  const [fetch, setFetch] = useState(false);
   const [foodCard, setFoodCard] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-    const fetchFoodCard = async() => {
-      try {
+  const fetchFoodCard = async () => {
+    try {
 
-        const list = [];
+      const list = [];
 
-        await firestore()
+      await firestore()
         .collection('foodcards')
         .orderBy('title', 'desc')
         .get()
@@ -52,7 +52,8 @@ const HomeScreen = ({navigation}) => {
               menuImg,
               coordinate,
               ratings,
-              reviews
+              reviews,
+              likes
             } = doc.data();
             list.push({
               id: doc.id,
@@ -65,38 +66,40 @@ const HomeScreen = ({navigation}) => {
               coordinate,
               ratings,
               reviews,
+              likes,
               liked: false,
             })
           })
         })
 
-        setFoodCard(list);
-        if(loading) {
-          setLoading(false);
-        }
-
-        console.log("Card:", foodCard);
-      } catch(e) {
-        console.log(e);
+      setFoodCard(list);
+      if (loading) {
+        setLoading(false);
       }
-    };
 
-    useEffect(() => {
-      fetchFoodCard();
-      // Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
-      // Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
-  
-      // // cleanup function
-      // return () => {
-      //   Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
-      //   Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
-      // };
-    }, []);
+      // console.log("Card:", foodCard);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchFoodCard();
+  }, []);
 
   const updateSearch = (search) => {
     // this.setState(search = this.state.search);
     console.log('search triggered!!', search)
   };
+
+  const FetchHome = () => {
+    setFetch(true)
+  }
+
+  useEffect(() => {
+    fetchFoodCard();
+    setFetch(false)
+  }, [fetch]);
 
   // useEffect(() => {
   //   setInterval(() => {
@@ -109,7 +112,7 @@ const HomeScreen = ({navigation}) => {
   //                 y: 0,
   //                 x: width * selectedIndex
   //               })}
-              
+
   //   }, 3000)
   // }, [])
 
@@ -140,69 +143,57 @@ const HomeScreen = ({navigation}) => {
   //   setSelectedIndex({ selectedIndexed });
   // }
 
-    // const { search } = this.state;
-    // const { selectedIndex } = this.state;
+  // const { search } = this.state;
+  // const { selectedIndex } = this.state;
 
-    const renderItem = ({item}) => {
-      return (
-          <Card 
-              itemData={item}
-              onPress={()=> navigation.navigate('CardDetails', {itemData: item})}
-          />
-      );
+  const renderItem = ({ item }) => {
+    return (
+      <Card
+        itemData={item}
+        onPress={() => {navigation.navigate('CardDetails', { itemData: item }), FetchHome()}}
+      />
+    );
   };
 
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle={"light-content"} />
-        <View style={styles.banner}>
-        <SearchBar
-          placeholder="Name of the place..."
-          onChangeText={(txt) => updateSearch(txt)}
-          value={searchState}
-          containerStyle={{
-            backgroundColor: '#64b5f6',
-          }}
-          inputContainerStyle={{
-            backgroundColor: 'white',
-
-          }}
-        />
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle={"light-content"} />
+      <View style={styles.banner}>
 
         <Swiper
-          autoplay ={true}
+          autoplay={true}
           height={200}
           activeDotColor="#fff">
           <View style={styles.slide}>
             <Image
-              source={{uri: 'https://media.foody.vn/images/beauty-upload-api-675x355-%281%29-201224151240.jpg'}}
+              source={{ uri: 'https://media.foody.vn/images/beauty-upload-api-675x355-%281%29-201224151240.jpg' }}
               resizeMode="cover"
               style={styles.sliderImage}
             />
           </View>
           <View style={styles.slide}>
             <Image
-              source={{uri: 'https://media.foody.vn/images/beauty-upload-api-675x355-210219174402.jpg'}}
+              source={{ uri: 'https://media.foody.vn/images/beauty-upload-api-675x355-210219174402.jpg' }}
               resizeMode="cover"
               style={styles.sliderImage}
             />
           </View>
           <View style={styles.slide}>
             <Image
-              source={{uri: 'https://media.foody.vn/images/beauty-upload-api-675x355.-210309112809.jpg'}}
+              source={{ uri: 'https://media.foody.vn/images/beauty-upload-api-675x355.-210309112809.jpg' }}
               resizeMode="cover"
               style={styles.sliderImage}
             />
           </View>
           <View style={styles.slide}>
             <Image
-              source={{uri: 'https://images.foody.vn/biz_banner/foody-upload-api-food-biz-210315111823.jpg'}}
+              source={{ uri: 'https://images.foody.vn/biz_banner/foody-upload-api-food-biz-210315111823.jpg' }}
               resizeMode="cover"
               style={styles.sliderImage}
             />
           </View>
         </Swiper>
-        
+
         {/* <ScrollView
           onMomentumScrollEnd={(event)=> {
             const viewSize = event.nativeEvent.layoutMeasurement.width;
@@ -233,29 +224,29 @@ const HomeScreen = ({navigation}) => {
             />
           ))}
         </View> */}
-        </View>
+      </View>
 
-        <View style={styles.tabbar}>
-          <ScrollableTabView
-            style={{marginTop:20 }}
-            initialPage={0}
-            tabBarActiveTextColor='blue'
-            renderTabBar={() => <DefaultTabBar  />}
-          >
-            {/* <Near key="key1" tabLabel='Near You' onPress={()=> navigation.navigate('CardDetails')}></Near> */}
-            <View key='key1' tabLabel='Near You' >
-        <FlatList 
-            data={foodCard}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-        />
+      <View style={styles.tabbar}>
+        <ScrollableTabView
+          style={{ marginTop: 20 }}
+          initialPage={0}
+          tabBarActiveTextColor='blue'
+          renderTabBar={() => <DefaultTabBar />}
+        >
+          {/* <Near key="key1" tabLabel='Near You' onPress={()=> navigation.navigate('CardDetails')}></Near> */}
+          <View key='key1' tabLabel='Near You' >
+            <FlatList
+              data={foodCard}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+            />
+          </View>
+          <Popular key='key2' tabLabel='Popular'></Popular>
+        </ScrollableTabView>
       </View>
-            <Popular key = 'key2' tabLabel='Popular'></Popular>
-          </ScrollableTabView>
-          </View>  
-      </View>
-    )
-  
+    </View>
+  )
+
 }
 
 export default HomeScreen;
@@ -304,11 +295,11 @@ const styles = StyleSheet.create({
   },
   tabbar: {
     flex: 1,
-    marginTop: width*0.69,
+    marginTop: width * 0.5,
     paddingHorizontal: 30,
   },
   viewSpace: {
-    marginTop:0,
+    marginTop: 0,
     height: 10,
   }
 });

@@ -231,6 +231,19 @@ const ProfileScreen = ({ navigation }) => {
                     }]}>Confirm</Text>
                   </LinearGradient>
                 </TouchableOpacity>
+                
+                <TouchableOpacity
+                  style={styles.changePassword}
+                  onPress={() => ModalPopupClose()}>
+                  <LinearGradient                         //button Sign in here
+                    colors={['#4c669f', '#3b5998']}
+                    style={styles.changePassword}>
+                    <Text style={[styles.text_button, {
+                      color: 'white'
+                    }]}>Cancel</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+                
               </View>
             </View>
           </View>
