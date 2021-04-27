@@ -27,13 +27,6 @@ const SigninCom = ({navigation}) => {
       isValidUser: true,
       isValidPassword: true,
     });
-
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-    // const [check_textInputChange, setCheck_textInputChange] = useState(false);
-    // const [secureTextEntry, setSecureTextEntry] = useState(true);
-    // const [isValidUser, setIsValidUser] = useState(true);
-    // const [isValidPassword, setIsValidPassword] = useState(true);
   
   textInputChange = (value) => {
     if (value.length >= 11) {
@@ -92,18 +85,6 @@ const SigninCom = ({navigation}) => {
     }
 }
 
-  disableBackButton = () => {
-    BackHandler.exitApp();
-    return true;
-  }
-
-  /*componentDidMount() {
-    BackHandler.addEventListener("hardwareBackPress", this.disableBackButton);
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.disableBackButton);
-  }*/
     return (
       <View style={styles.container}>
         <View style={styles.header}>

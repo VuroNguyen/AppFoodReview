@@ -150,14 +150,16 @@ const CardDetailsScreen = ({ route, navigation }) => {
           querySnapshot.forEach((doc) => {
             const {
               post,
+              userName,
+              userImg,
               postImg,
               postTime,
               star,
             } = doc.data();
             list.push({
               id: doc.id,
-              userName: userData? userData.name : 'User',
-              userImg: userData? userData.userImg : null,
+              userName: userName,
+              userImg: userImg,
               postTime: postTime,
               post,
               postImg,
@@ -346,6 +348,8 @@ const CardDetailsScreen = ({ route, navigation }) => {
       .collection('posts')
       .add({
         userId: user.uid,
+        userImg: userData.userImg,
+        userName: userData.name,
         post: post,
         postImg: imageUrl,
         postTime: firestore.Timestamp.fromDate(new Date()),
@@ -497,12 +501,6 @@ const CardDetailsScreen = ({ route, navigation }) => {
         <View style={styles.section}>
           <Image source={{ uri: itemData.menuImg }} style={styles.image} />
         </View>
-
-        {/* <View style={styles.contactBtn}>
-              {userData ? userData.role === '' ?
-                <Button title='Contact' onPress={() => Test()} />
-                : null: null}
-            </View> */}
 
         <View style={[styles.section, { height: 250 }]}>
           <MapView

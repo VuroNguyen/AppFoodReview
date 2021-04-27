@@ -76,10 +76,7 @@ const PostCard = ({item, onPress}) => {
       <UserInfo>
         <UserImg
           source={{
-            uri: userData
-              ? userData.userImg ||
-                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
-              : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+            uri: item.userImg
           }}
         />
         <UserInfoText>

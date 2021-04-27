@@ -101,51 +101,6 @@ const HomeScreen = ({ navigation }) => {
     setFetch(false)
   }, [fetch]);
 
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     setSelectedIndex({
-  //       selectedIndex: selectedIndex === images.length - 1? 0 : selectedIndex + 1
-  //     }),
-  //     () => {
-  //               scrollRef.current.scrollTo({
-  //                 animated: true,
-  //                 y: 0,
-  //                 x: width * selectedIndex
-  //               })}
-
-  //   }, 3000)
-  // }, [])
-
-  // componentDidMount = () => {
-  //   setInterval(() => {
-  //     this.setState(prev => ({ selectedIndex: prev.selectedIndex === images.length - 1 ? 0 : prev.selectedIndex + 1 }),
-  //       () => {
-  //         this.scrollRef.current.scrollTo({
-  //           animated: true,
-  //           y: 0,
-  //           x: width * this.state.selectedIndex
-  //         })
-  //       })
-  //   }, 3000)
-  // }
-
-  // componentWillUnmount = () => {
-
-  // }
-
-  // const OnChangeIndex = (event) => {
-  //   //width of viewsize
-  //   const viewSize = event.nativeEvent.layoutMeasurement.width;
-  //   //position of white dot
-  //   const contentOffset = event.nativeEvent.contentOffset.x;
-
-  //   const selectedIndexed = Math.floor(contentOffset / viewSize)
-  //   setSelectedIndex({ selectedIndexed });
-  // }
-
-  // const { search } = this.state;
-  // const { selectedIndex } = this.state;
-
   const renderItem = ({ item }) => {
     return (
       <Card
@@ -194,36 +149,6 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </Swiper>
 
-        {/* <ScrollView
-          onMomentumScrollEnd={(event)=> {
-            const viewSize = event.nativeEvent.layoutMeasurement.width;
-            //position of white dot
-            const contentOffset = event.nativeEvent.contentOffset.x;
-        
-            const selectedIndexed = Math.floor(contentOffset / viewSize)
-            setSelectedIndex({ selectedIndexed });
-          }}
-          ref={scrollRef}
-          pagingEnabled
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={{ width, height }}>
-          {images.map((image, index) => (
-            <Image
-              key={index}
-              source={{ uri: image }}
-              style={{ width, height, resizeMode: 'contain' }}
-            />
-          ))}
-        </ScrollView>
-        <View style={styles.circleDiv}>
-          {images.map((image, i) => (
-            <View
-              key={image}
-              style={[styles.whiteCircle, { opacity: i === selectedIndex ? 0.5 : 1 }]}
-            />
-          ))}
-        </View> */}
       </View>
 
       <View style={styles.tabbar}>
