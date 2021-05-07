@@ -7,5 +7,5 @@ email: owner@gmail.com
 password: 123456
 
 To run the code, download the source code and npm i to install packages. Then, npx react-native run-android to start the app.
-Download these file through this link https://drive.google.com/file/d/1PncWXR95tX9iUQ_Cg8sDC-WpDdlymlfv/view?usp=sharing
+If the project cant run, Download these file through this link https://drive.google.com/file/d/1PncWXR95tX9iUQ_Cg8sDC-WpDdlymlfv/view?usp=sharing
 and replace in the source code to config database and some specific config to run smoothly.
